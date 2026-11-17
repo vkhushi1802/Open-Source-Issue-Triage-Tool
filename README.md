@@ -1,1 +1,2 @@
 # Open-Source-Issue-Triage-Tool
+The Open Source Issue Triage and Developer Assignment Tool is a C++ application that organizes software issues, prioritizes tasks, assigns developers based on skills and capacity, manages dependencies, and compares algorithmic strategies for efficient project planning.

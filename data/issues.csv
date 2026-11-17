@@ -1,0 +1,11 @@
+id,title,description,required_skill,priority,estimated_hours,deadline,status,module,depends_on
+101,Fix Login Bug,Users cannot log in with valid credentials,Backend,10,3,2026-11-12,Open,Authentication,
+102,Improve Homepage,Redesign homepage layout for better user experience,Frontend,7,4,2026-11-14,Open,UI,
+103,Fix Payment Bug,Payment fails for some users during checkout,Backend,10,5,2026-11-13,Open,Payment,101
+104,Build Dashboard,Create analytics dashboard for users,Frontend,6,6,2026-11-16,Open,Dashboard,102
+105,Optimize Database,Improve database query performance,Database,8,4,2026-11-13,Open,Database,
+106,Add Search Feature,Allow users to search projects,Frontend,8,5,2026-11-15,Open,Search,
+107,Fix API Timeout,API requests take too long to respond,Backend,9,3,2026-11-12,Open,API,
+108,Write Unit Tests,Add automated tests for authentication,Testing,5,4,2026-11-17,Open,Testing,101
+109,Improve Security,Fix password validation and security checks,Security,9,6,2026-11-14,Open,Authentication,101
+110,Update Documentation,Document API endpoints and usage,Documentation,4,2,2026-11-18,Open,Documentation,
