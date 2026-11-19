@@ -9,6 +9,28 @@
 
 using namespace std;
 
+
+int readInt(
+    const string& value,
+    const string& filename,
+    int row,
+    const string& column
+) {
+    try {
+        return stoi(value);
+    }
+    catch (const exception& e) {
+        cerr << "\nCSV ERROR!"
+             << "\nFile: " << filename
+             << "\nRow: " << row
+             << "\nColumn: " << column
+             << "\nInvalid value: [" << value << "]\n";
+
+        throw;
+    }
+}
+
+
 vector<Issue> loadIssues(const string& filename) {
 
     vector<Issue> issues;
@@ -25,7 +47,11 @@ vector<Issue> loadIssues(const string& filename) {
     // Skip the header row
     getline(file, line);
 
+    int row = 1;
+
     while (getline(file, line)) {           //This keeps reading until the file ends.
+
+        row++;
 
         stringstream ss(line);
         string field;
@@ -44,19 +70,27 @@ vector<Issue> loadIssues(const string& filename) {
 
         Issue issue;
 
-        issue.id = stoi(fields[0]);
+        issue.id = readInt(fields[0], filename, row, "id");
         issue.title = fields[1];
         issue.desc = fields[2];
 
-        // Store the required skill
-        Skill skill;
-        skill.name = fields[3];
-        skill.proficiency = "Not specified";
 
-        issue.requiredskills.push_back(skill);
+        // Store multiple required skills
+        stringstream skillStream(fields[3]);
+        string skillName;
 
-        issue.priority = stoi(fields[4]);
-        issue.estimatedHours = stoi(fields[5]);
+        while (getline(skillStream, skillName, ';')) {
+
+            Skill skill;
+            skill.name = skillName;
+            skill.proficiency = "Not specified";
+
+            issue.requiredskills.push_back(skill);
+        }
+
+
+        issue.priority = readInt(fields[4], filename, row, "priority");
+        issue.estimatedHours = readInt(fields[5], filename, row, "estimated_hours");
         issue.deadline = fields[6];
         issue.status = fields[7];
 
@@ -87,7 +121,11 @@ vector<Developer> loadDevelopers(const string& filename) {
     // Skip the header row
     getline(file, line);
 
+    int row = 1;
+
     while (getline(file, line)) {           //This keeps reading until the file ends.
+
+        row++;
 
         stringstream ss(line);
         string field;
@@ -106,24 +144,24 @@ vector<Developer> loadDevelopers(const string& filename) {
 
         Developer developer;
 
-        developer.id = stoi(fields[0]);
+        developer.id = readInt(fields[0], filename, row, "developer_id");
         developer.name = fields[1];
-        developer.availHours = stoi(fields[2]);
-        developer.currentWorkload=stoi(fields[3]);
-        developer.experience=fields[4];
+        developer.availHours = readInt(fields[2], filename, row, "available_hours");
+        developer.currentWorkload = readInt(fields[3], filename, row, "current_workload");
+        developer.experience = fields[4];
 
-       
+
         // Add the completed Developer object to our vector
         developers.push_back(developer);
     }
-
-
 
 
     file.close();
 
     return developers;
 }
+
+
 
 vector<Developer> loadDeveloperSkills(const string& filename, vector<Developer> developers) {
 
@@ -139,7 +177,11 @@ vector<Developer> loadDeveloperSkills(const string& filename, vector<Developer> 
     // Skip header
     getline(file, line);
 
+    int row = 1;
+
     while (getline(file, line)) {
+
+        row++;
 
         stringstream ss(line);
         string field;
@@ -154,7 +196,7 @@ vector<Developer> loadDeveloperSkills(const string& filename, vector<Developer> 
             continue;
         }
 
-        int developerID = stoi(fields[0]);
+        int developerID = readInt(fields[0], filename, row, "developer_id");
 
         Skill skill;
         skill.name = fields[1];
@@ -176,6 +218,8 @@ vector<Developer> loadDeveloperSkills(const string& filename, vector<Developer> 
     return developers;
 }
 
+
+
 vector<Dependency> loadDependencies(const string& filename) {
 
     vector<Dependency> dependencies;
@@ -192,7 +236,11 @@ vector<Dependency> loadDependencies(const string& filename) {
     // Skip header
     getline(file, line);
 
+    int row = 1;
+
     while (getline(file, line)) {
+
+        row++;
 
         stringstream ss(line);
         string field;
@@ -209,8 +257,8 @@ vector<Dependency> loadDependencies(const string& filename) {
 
         Dependency dependency;
 
-        dependency.issueId = stoi(fields[0]);
-        dependency.dependsOnIssueId = stoi(fields[1]);
+        dependency.issueId = readInt(fields[0], filename, row, "issue_id");
+        dependency.dependsOnIssueId = readInt(fields[1], filename, row, "depends_on_issue_id");
 
         dependencies.push_back(dependency);
     }

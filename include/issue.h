@@ -33,9 +33,17 @@ struct Assignment {
     int developerId;
     int assignedHours;
     string status;
+    string reason;
 };
 
 struct Dependency {
     int issueId;
     int dependsOnIssueId;
+};
+
+
+struct Activity {
+    int issueId;
+    int startTime;
+    int endTime;
 };

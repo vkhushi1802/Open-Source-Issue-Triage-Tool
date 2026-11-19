@@ -1,7 +1,7 @@
-id,title,description,required_skill,priority,estimated_hours,deadline,status,module,depends_on
-101,Fix Login Bug,Users cannot log in with valid credentials,Backend,10,3,2026-11-12,Open,Authentication,
+id,title,description,required_skills,priority,estimated_hours,deadline,status,module,depends_on
+101,Fix Login Bug,Users cannot log in with valid credentials,Backend;Security,10,3,2026-11-12,Open,Authentication,
 102,Improve Homepage,Redesign homepage layout for better user experience,Frontend,7,4,2026-11-14,Open,UI,
-103,Fix Payment Bug,Payment fails for some users during checkout,Backend,10,5,2026-11-13,Open,Payment,101
+103,Fix Payment Bug,Payment fails for some users during checkout,Backend;Database,10,5,2026-11-13,Open,Payment,101
 104,Build Dashboard,Create analytics dashboard for users,Frontend,6,6,2026-11-16,Open,Dashboard,102
 105,Optimize Database,Improve database query performance,Database,8,4,2026-11-13,Open,Database,
 106,Add Search Feature,Allow users to search projects,Frontend,8,5,2026-11-15,Open,Search,
