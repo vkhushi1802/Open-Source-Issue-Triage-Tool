@@ -19,7 +19,7 @@ int readInt(
     try {
         return stoi(value);
     }
-    catch (const exception& e) {
+    catch (const exception& ) {
         cerr << "\nCSV ERROR!"
              << "\nFile: " << filename
              << "\nRow: " << row

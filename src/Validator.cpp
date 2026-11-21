@@ -57,6 +57,12 @@ void merge(vector<int> &arr, int left, int mid, int right){
         temp.push_back(arr[j]);
         j++;
     }
+
+
+        // Copy sorted elements back into the original array
+    for (int k = 0; k < temp.size(); k++) {
+        arr[left + k] = temp[k];
+    }
 }
 
 
@@ -86,7 +92,7 @@ bool hasDuplicateIssueIDsMergeSort(const std::vector<Issue>& issues) {
     }
 
     // Check neighbouring elements
-    for (int i = 0; i < issueIDs.size() - 1; i++) {
+    for (int i = 0; i+1 < issueIDs.size(); i++) {
 
         if (issueIDs[i] == issueIDs[i + 1]) {
             return true;
@@ -109,7 +115,7 @@ bool hasDuplicateIssueIDsMergeSort(const std::vector<Issue>& issues) {
 bool binarySearchIssueID(const vector<int>& issueIDs, int target) {
 
     int left = 0;
-    int right = issueIDs.size() - 1;
+int right = issueIDs.empty() ? -1 : issueIDs.size() - 1;
 
     while (left <= right) {
 
@@ -451,180 +457,3 @@ vector<int> greedyIssueOrder(
 }
 
 
-
-
-vector<Activity> activitySelection(
-    vector<Activity>& activities
-) {
-
-    // Step 1: Sort activities by ending time
-    sort(
-        activities.begin(),
-        activities.end(),
-        [](const Activity& a, const Activity& b) {
-
-            if (a.endTime != b.endTime) {
-                return a.endTime < b.endTime;
-            }
-
-            return a.issueId < b.issueId;
-        }
-    );
-
-    // Step 2: Store selected activities
-    vector<Activity> selected;
-
-    // Step 3: Select the first activity
-    if (activities.empty()) {
-        return selected;
-    }
-
-    selected.push_back(activities[0]);
-
-    int lastEndTime = activities[0].endTime;
-
-    // Step 4: Check remaining activities
-    for (int i = 1; i < activities.size(); i++) {
-
-        // Select only if there is no overlap
-        if (activities[i].startTime >= lastEndTime) {
-
-            selected.push_back(activities[i]);
-
-            lastEndTime = activities[i].endTime;
-        }
-    }
-
-
-    
-
-    return selected;
-}
-
-
-
-
-
-
-
-
-
-
-
-vector<vector<Activity>> intervalPartitioning(
-    vector<Activity> activities
-) {
-
-    // Step 1: Sort activities by starting time
-    sort(
-        activities.begin(),
-        activities.end(),
-        [](const Activity& a, const Activity& b) {
-
-            if (a.startTime != b.startTime) {
-                return a.startTime < b.startTime;
-            }
-
-            return a.endTime < b.endTime;
-        }
-    );
-
-    // Step 2: Store developer schedules
-    vector<vector<Activity>> developers;
-
-    // Step 3: Process each activity
-    for (int i = 0; i < activities.size(); i++) {
-
-        bool assigned = false;
-
-        // Check whether an existing developer is available
-        for (int j = 0; j < developers.size(); j++) {
-
-            Activity lastActivity = developers[j].back();
-
-            if (lastActivity.endTime <= activities[i].startTime) {
-
-                developers[j].push_back(activities[i]);
-
-                assigned = true;
-
-                break;
-            }
-        }
-
-        // If nobody is available, create a new developer
-        if (!assigned) {
-
-            vector<Activity> newDeveloper;
-
-            newDeveloper.push_back(activities[i]);
-
-            developers.push_back(newDeveloper);
-        }
-    }
-
-    return developers;
-}
-
-
-
-
-
-
-int knapsack(
-    const vector<Issue>& issues,
-    int capacity,
-    vector<int>& selectedIssueIDs
-) {
-    int n = issues.size();
-
-    // Clear previous selections
-    selectedIssueIDs.clear();
-
-    // Create a DP table with (n+1) rows and (capacity+1) columns
-    vector<vector<int>> dp(
-        n + 1,
-        vector<int>(capacity + 1, 0)
-    );
-
-    // Fill the DP table
-    for (int i = 1; i <= n; i++) {
-
-        int hours = issues[i - 1].estimatedHours;
-        int priority = issues[i - 1].priority;
-
-        for (int w = 0; w <= capacity; w++) {
-
-            // Option 1: Do not select this issue
-            dp[i][w] = dp[i - 1][w];
-
-            // Option 2: Select this issue, if it fits
-            if (hours >= 0 && hours <= w) {
-
-                int includeIssue =
-                    priority + dp[i - 1][w - hours];
-
-                // Choose whichever gives higher priority
-                dp[i][w] = max(dp[i][w], includeIssue);
-            }
-        }
-    }
-
-    // Backtrack to find which issues were selected
-    int remainingCapacity = capacity;
-
-    for (int i = n; i >= 1; i--) {
-
-        // If the answer changed, this issue was selected
-        if (dp[i][remainingCapacity] != dp[i - 1][remainingCapacity]) {
-
-            selectedIssueIDs.push_back(issues[i - 1].id);
-
-            // Reduce the remaining available hours
-            remainingCapacity -= issues[i - 1].estimatedHours;
-        }
-    }
-
-    // Return maximum total priority
-    return dp[n][capacity];
-}

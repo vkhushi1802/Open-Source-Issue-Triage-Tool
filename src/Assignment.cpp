@@ -1,7 +1,6 @@
 
 #include "Assignment.h"
 #include <iostream>
-#include <algorithm>
 #include <climits>
 
 using namespace std;

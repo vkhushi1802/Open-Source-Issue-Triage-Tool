@@ -41,9 +41,3 @@ struct Dependency {
     int dependsOnIssueId;
 };
 
-
-struct Activity {
-    int issueId;
-    int startTime;
-    int endTime;
-};
